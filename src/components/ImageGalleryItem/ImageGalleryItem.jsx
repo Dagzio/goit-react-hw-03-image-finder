@@ -1,11 +1,16 @@
-const ImageGalleryItem = ({ images }) => {
+import { Component } from 'react';
 
-    return images.hits.map(({ webformatURL, tags, id }) => {
-        <li key={id}>
-            <img src={webformatURL} alt={tags} loading="lazy" height="260" />
-        </li>
-    });
-
+export default class ImageGalleryItem extends Component {
+  render() {
+    return (
+      <li>
+        <img
+          src={this.props.webformatURL}
+          alt={this.props.tags}
+          loading="lazy"
+          height="260"
+        />
+      </li>
+    );
+  }
 }
-
-export default ImageGalleryItem;
