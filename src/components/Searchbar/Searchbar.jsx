@@ -1,15 +1,19 @@
 import { Component } from 'react';
 import { Header, SearchInput } from 'components/Searchbar/Searchbar.styled';
-import Button from '../Button/Button';
+import { SearchButton } from 'components/Searchbar/Searchbar.styled';
 
 export default class Searchbar extends Component {
-  handleChangeQuery = ({ target: { value } }) => {
-    this.props.setSearchQuery(value);
+  state = {
+    query: '',
+  };
+
+  setSearchQuery = ({ target: { value } }) => {
+    this.setState({ query: value });
   };
 
   onSubmit = e => {
     e.preventDefault();
-    this.props.onSubmit();
+    this.props.onSubmit(this.state.query);
   };
 
   render() {
@@ -21,10 +25,10 @@ export default class Searchbar extends Component {
             name="searchQuery"
             autoFocus
             placeholder="Search images and photos"
-            onChange={this.handleChangeQuery}
-            value={this.props.searchQuery}
+            onChange={this.setSearchQuery}
+            value={this.state.query}
           />
-          <Button />
+          <SearchButton type="submit">Search</SearchButton>
         </form>
       </Header>
     );

@@ -1,7 +1,11 @@
-import { SearchButton } from "./Button.styled"
+import { LoadMoreBtn } from './Button.styled';
 
-const Button = () => {
-    return <SearchButton type="submit">Search</SearchButton>
+const Button = ({ onClick }) => {
+  return (
+    <LoadMoreBtn type="submit" onClick={onClick}>
+      Load more
+    </LoadMoreBtn>
+  );
 };
 
 export default Button;

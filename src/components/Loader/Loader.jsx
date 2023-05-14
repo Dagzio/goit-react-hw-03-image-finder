@@ -1,17 +1,15 @@
 import { ColorRing } from 'react-loader-spinner';
 
-const Loader = () => {
+export default function Loader({ visible }) {
   return (
     <ColorRing
-      visible={true}
-      height="80"
-      width="580"
+      visible={visible}
+      height="65"
+      width="100"
       ariaLabel="blocks-loading"
       wrapperStyle={{}}
       wrapperClass="blocks-wrapper"
       colors={['#e15b64', '#f47e60', '#f8b26a', '#abbd81', '#849b87']}
     />
   );
-};
-
-export default Loader;
+}
