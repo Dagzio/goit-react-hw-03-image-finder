@@ -1,26 +1,22 @@
 import ImageGalleryItem from 'components/ImageGalleryItem/ImageGalleryItem';
+import { nanoid } from 'nanoid';
+import { Gallery, GalleryList } from './ImageGallery.styled';
 
-const ImageGallery = ({ images, onLoadMore }) => {
-  const onLoadMoreBtn = () => {
-    onLoadMore();
-  };
+const ImageGallery = ({ images }) => {
   return (
-    <div>
-      <ul>
-        {images.map(({ webformatURL, tags, id }) => {
+    <Gallery id="gallery">
+      <GalleryList>
+        {images.map(({ webformatURL, tags }) => {
           return (
             <ImageGalleryItem
               webformatURL={webformatURL}
               tags={tags}
-              key={id}
+              key={nanoid()}
             />
           );
         })}
-      </ul>
-      <button type="submit" onClick={onLoadMoreBtn}>
-        Load more
-      </button>
-    </div>
+      </GalleryList>
+    </Gallery>
   );
 };
 

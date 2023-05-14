@@ -1,12 +1,12 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const SearchButton = styled.button`
   width: 48px;
-  height: 48px;
+  height: 38px;
   border: transparent;
-  cursor:pointer;
+  cursor: pointer;
 
-  &:active{
+  &:active {
     background-color: grey;
   }
 `;

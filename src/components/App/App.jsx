@@ -3,7 +3,7 @@ import { Container } from './App.styled';
 import Searchbar from 'components/Searchbar/Searchbar';
 import ImageGallery from 'components/ImageGallery/ImageGallery';
 import axios from 'axios';
-// import ImageGallery from "components/ImageGallery/ImageGallery";
+import Loader from 'components/Loader/Loader';
 
 export default class App extends Component {
   state = {
@@ -11,6 +11,7 @@ export default class App extends Component {
     lastSearchRequestQuery: '',
     images: [],
     page: 1,
+    isLoading: false,
   };
 
   options = {
@@ -22,25 +23,27 @@ export default class App extends Component {
   };
 
   fetchImages(loadMore = false) {
+    const { BASE_URL, API_KEY, image_type, orientation, per_page } =
+      this.options;
     const query = loadMore
       ? this.state.lastSearchRequestQuery
       : this.state.searchQuery;
 
     axios
       .get(
-        `${this.options.BASE_URL}?key=${this.options.API_KEY}&q=${query}&image_type=${this.options.image_type}&orientation=${this.options.orientation}&page=${this.state.page}&per_page=${this.options.per_page}`
+        `${BASE_URL}?key=${API_KEY}&q=${query}&image_type=${image_type}&orientation=${orientation}&page=${this.state.page}&per_page=${per_page}`
       )
       .then(response => response.data)
       .then(data => {
-        const images = data.hits;
+        const takenImages = data.hits;
 
         if (loadMore) {
           this.setState(prevState => ({
-            images: prevState.images.concat(images),
+            images: prevState.images.concat(takenImages),
           }));
         } else {
           this.setState(prevState => ({
-            images: images,
+            images: takenImages,
             lastSearchRequestQuery: prevState.searchQuery,
           }));
         }
@@ -51,11 +54,12 @@ export default class App extends Component {
     this.fetchImages();
   };
 
-  setSearchQuery = querry => {
-    this.setState({ searchQuery: querry });
+  setSearchQuery = query => {
+    this.setState({ searchQuery: query });
   };
 
-  loadNextPage = () => {
+  onLoadMore = () => {
+    this.toggleLoaderVisible();
     this.setState(
       prevState => ({
         page: prevState.page + 1,
@@ -64,6 +68,21 @@ export default class App extends Component {
         this.fetchImages(true);
       }
     );
+
+    this.toggleLoaderVisible();
+
+    const { height: cardHeight } = document
+      .getElementById('#gallery')
+      .firstElementChild.getBoundingClientRect();
+
+    window.scrollBy({
+      top: cardHeight * 2.75,
+      behavior: 'smooth',
+    });
+  };
+
+  toggleLoaderVisible = () => {
+    this.setState(prevState => ({ isLoading: !prevState.isLoading }));
   };
 
   render() {
@@ -74,10 +93,18 @@ export default class App extends Component {
           searchQuery={this.state.searchQuery}
           setSearchQuery={this.setSearchQuery}
         />
-        <ImageGallery
-          images={this.state.images}
-          onLoadMore={this.loadNextPage}
-        />
+        {this.state.images.length > 0 && (
+          <>
+            <ImageGallery images={this.state.images} />
+            {!this.state.isLoading ? (
+              <button type="submit" onClick={this.onLoadMore}>
+                Load more
+              </button>
+            ) : (
+              <Loader />
+            )}
+          </>
+        )}
       </Container>
     );
   }
