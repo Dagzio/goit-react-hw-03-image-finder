@@ -2,7 +2,7 @@ import { Component } from 'react';
 import { Container } from './App.styled';
 import Searchbar from 'components/Searchbar/Searchbar';
 import ImageGallery from 'components/ImageGallery/ImageGallery';
-import { fetchImages } from 'components/Api/Api';
+import { fetchImages } from 'Api';
 import Loader from 'components/Loader/Loader';
 import Button from 'components/Button/Button';
 import Modal from 'components/Modal/Modal';
@@ -14,7 +14,7 @@ export default class App extends Component {
     page: 1,
     isLoading: false,
     showModal: false,
-    modalImg: ''
+    modalImg: '',
   };
 
   componentDidUpdate(none, prevState) {
@@ -79,18 +79,21 @@ export default class App extends Component {
         <Searchbar onSubmit={this.handleFormSubmit} />
         {this.state.images.length > 0 && (
           <>
-            <ImageGallery images={this.state.images} showModal={this.showModal}/>
+            <ImageGallery
+              images={this.state.images}
+              showModal={this.showModal}
+            />
             {this.state.isLoading ? (
               <Loader visible={this.state.isLoading} />
             ) : (
               <Button onClick={this.onLoadMore} />
             )}
-             {this.state.showModal && (
-          <Modal
-            modalImg={this.state.modalImg}
-            closeModal={this.closeModal}
-          />
-        )}
+            {this.state.showModal && (
+              <Modal
+                modalImg={this.state.modalImg}
+                closeModal={this.closeModal}
+              />
+            )}
           </>
         )}
       </Container>
