@@ -1,4 +1,5 @@
 import { ColorRing } from 'react-loader-spinner';
+import PropTypes from 'prop-types';
 
 export default function Loader({ visible }) {
   return (
@@ -13,3 +14,7 @@ export default function Loader({ visible }) {
     />
   );
 }
+
+Loader.propTypes = {
+  visible: PropTypes.string,
+};
